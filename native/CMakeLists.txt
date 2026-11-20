@@ -3,6 +3,9 @@ project(gepstorm CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# фикс конфликта libc++ NDK r26: cmath/isnan/__promote
+add_compile_options(-fno-builtin)
+
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/imgui)
 
 add_library(imgui STATIC

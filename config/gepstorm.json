@@ -1,0 +1,6 @@
+{
+  "auth": {"required": true, "mode": "jwt", "public_key_pem": "", "static_prefix": "GEP", "allow_offline": true},
+  "aim_enabled": true, "aim_fov": 220.0, "aim_smooth": 2.5, "aim_bone": 0, "aim_range": 300.0,
+  "bhop_enabled": true, "esp_enabled": true, "esp_box": true, "esp_name": true,
+  "esp_health": true, "esp_skel": true, "wh_enabled": true, "snow_enabled": true
+}

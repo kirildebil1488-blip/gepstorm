@@ -11,12 +11,10 @@ add_library(imgui STATIC
     ${IMGUI_DIR}/backends/imgui_impl_android.cpp)
 target_include_directories(imgui PUBLIC ${IMGUI_DIR} ${IMGUI_DIR}/backends)
 
-add_subdirectory(third_party/Dobby ${CMAKE_BINARY_DIR}/dobby_build)
-
 add_library(gepstorm SHARED
     jni/gepstorm_main.cpp jni/hook.cpp jni/il2cpp_resolver.cpp
     jni/config.cpp jni/esp.cpp jni/aim.cpp jni/bhop.cpp
     jni/snow.cpp jni/overlay_gl.cpp jni/auth_bridge.cpp)
 target_include_directories(gepstorm PRIVATE jni third_party/nlohmann ${IMGUI_DIR} ${IMGUI_DIR}/backends)
-target_link_libraries(gepstorm log android GLESv3 EGL imgui $<TARGET_FILE:dobby>)
-target_compile_options(gepstorm PRIVATE -O2 -fvisibility=hidden -D_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER -Wno-unused-parameter)
+target_link_libraries(gepstorm log android GLESv3 EGL imgui)
+target_compile_options(gepstorm PRIVATE -O2 -fvisibility=hidden -Wno-unused-parameter)

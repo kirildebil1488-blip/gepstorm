@@ -16,27 +16,8 @@ jobs:
           mkdir -p native/third_party
           cd native/third_party
           git clone --depth 1 https://github.com/ocornut/imgui
-          # форк с фиксом ADRP под новый NDK
-          git clone --depth 1 https://github.com/zhkl0228/Dobby
           mkdir -p nlohmann
           curl -L -o nlohmann/json.hpp https://github.com/nlohmann/json/releases/latest/download/json.hpp
-      - name: patch-dobby-asm
-        run: |
-          set -x
-          F=native/third_party/Dobby/source/TrampolineBridge/ClosureTrampolineBridge/arm64/closure_bridge_arm64.asm
-          if [ -f "$F" ]; then
-            sed -i 's/@PAGE/:pg_hi21:/g; s/@PAGEOFF/:lo12:/g' "$F"
-            echo "patched $F"
-            grep -n 'adrp\|add x17' "$F" | head
-          fi
-
-      - name: patch-dobby-includes
-        run: |
-          set -x
-          F=native/third_party/Dobby/CMakeLists.txt
-          grep -n 'target_include_directories' $F || true
-          sed -i 's/target_include_directories(dobby PUBLIC/target_include_directories(dobby PRIVATE/g' $F
-          grep -n 'target_include_directories' $F || true
       - name: build
         run: |
           set -x

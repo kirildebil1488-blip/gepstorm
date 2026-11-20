@@ -12,6 +12,7 @@ jobs:
       - name: deps
         run: |
           set -x
+          mkdir -p native/third_party
           cd native/third_party
           git clone --depth 1 https://github.com/ocornut/imgui
           git clone --depth 1 https://github.com/jmpews/Dobby

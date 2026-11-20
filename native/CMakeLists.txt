@@ -13,19 +13,17 @@ add_library(imgui STATIC
     ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
     ${IMGUI_DIR}/backends/imgui_impl_android.cpp
 )
-target_include_directories(imgui PUBLIC
-    ${IMGUI_DIR}
-    ${IMGUI_DIR}/backends
-)
+target_include_directories(imgui PUBLIC ${IMGUI_DIR} ${IMGUI_DIR}/backends)
 
 add_subdirectory(third_party/Dobby ${CMAKE_BINARY_DIR}/dobby_build)
 
+# наш таргет НЕ линкует dobby как target, чтобы не унаследовать include
 add_library(gepstorm SHARED
     jni/gepstorm_main.cpp jni/hook.cpp jni/il2cpp_resolver.cpp
     jni/config.cpp jni/esp.cpp jni/aim.cpp jni/bhop.cpp
     jni/snow.cpp jni/overlay_gl.cpp jni/auth_bridge.cpp)
-target_include_directories(gepstorm PRIVATE
-    jni third_party/nlohmann)
-target_include_directories(gepstorm PRIVATE ${IMGUI_DIR})
-target_link_libraries(gepstorm log android GLESv3 EGL imgui dobby)
+target_include_directories(gepstorm PRIVATE jni third_party/nlohmann)
+target_include_directories(gepstorm PRIVATE ${IMGUI_DIR} ${IMGUI_DIR}/backends)
+# линкуем с готовым файлом библиотеки, без target-зависимости
+target_link_libraries(gepstorm log android GLESv3 EGL imgui $<TARGET_FILE:dobby>)
 target_compile_options(gepstorm PRIVATE -O2 -fvisibility=hidden -Wno-unused-parameter)

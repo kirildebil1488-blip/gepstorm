@@ -16,14 +16,23 @@ jobs:
           mkdir -p native/third_party
           cd native/third_party
           git clone --depth 1 https://github.com/ocornut/imgui
-          git clone --depth 1 https://github.com/jmpews/Dobby
+          # форк с фиксом ADRP под новый NDK
+          git clone --depth 1 https://github.com/zhkl0228/Dobby
           mkdir -p nlohmann
           curl -L -o nlohmann/json.hpp https://github.com/nlohmann/json/releases/latest/download/json.hpp
+      - name: patch-dobby-asm
+        run: |
+          set -x
+          F=native/third_party/Dobby/source/TrampolineBridge/ClosureTrampolineBridge/arm64/closure_bridge_arm64.asm
+          if [ -f "$F" ]; then
+            sed -i 's/@PAGE/:pg_hi21:/g; s/@PAGEOFF/:lo12:/g' "$F"
+            echo "patched $F"
+            grep -n 'adrp\|add x17' "$F" | head
+          fi
       - name: build
         run: |
           set -x
           NDK="${{ steps.ndk.outputs.ndk-path }}"
-          echo "Using NDK: $NDK"
           cmake -S native -B native/build -G Ninja \
             -DCMAKE_TOOLCHAIN_FILE="$NDK/build/cmake/android.toolchain.cmake" \
             -DANDROID_ABI=arm64-v8a -DANDROID_PLATFORM=android-26 \

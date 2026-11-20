@@ -29,6 +29,14 @@ jobs:
             echo "patched $F"
             grep -n 'adrp\|add x17' "$F" | head
           fi
+
+      - name: patch-dobby-includes
+        run: |
+          set -x
+          F=native/third_party/Dobby/CMakeLists.txt
+          grep -n 'target_include_directories' $F || true
+          sed -i 's/target_include_directories(dobby PUBLIC/target_include_directories(dobby PRIVATE/g' $F
+          grep -n 'target_include_directories' $F || true
       - name: build
         run: |
           set -x

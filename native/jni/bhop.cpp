@@ -1,5 +1,5 @@
 #include "bhop.h"
-#include "math.h"
+#include "vmath.h"
 void bhop_tick(Il2Cpp& il,void* lp,size_t offVel,size_t offG,bool space){
     if(!lp||!space) return;
     if(!il.read<bool>(lp,offG)) return;

@@ -19,4 +19,4 @@ add_library(gepstorm SHARED
     jni/snow.cpp jni/overlay_gl.cpp jni/auth_bridge.cpp)
 target_include_directories(gepstorm PRIVATE jni third_party/nlohmann ${IMGUI_DIR} ${IMGUI_DIR}/backends)
 target_link_libraries(gepstorm log android GLESv3 EGL imgui $<TARGET_FILE:dobby>)
-target_compile_options(gepstorm PRIVATE -O2 -fvisibility=hidden -Wno-unused-parameter)
+target_compile_options(gepstorm PRIVATE -O2 -fvisibility=hidden -D_LIBCPP_HAS_NO_PRAGMA_SYSTEM_HEADER -Wno-unused-parameter)
